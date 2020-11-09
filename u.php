@@ -94,6 +94,9 @@ upload file.png
 # paste function
 paste(){ curl -F"file=@-" https://xfnw.ttm.sh/u.php }
 cat something.txt | paste
+
+# auto upload your screenshots
+scrot -e 'curl -F"file=@$f" https://xfnw.ttm.sh/u.php | xclip -selection clipboard'
 </pre>
 
 <p>or</p>
