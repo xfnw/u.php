@@ -45,17 +45,14 @@ $target_file = $target_dir . substr(md5_file($_FILES['file']['tmp_name']), 1, 6)
 
 if (file_exists($_FILES["file"]['tmp_name'])) {
 	$uploadOk = 1;
+
 }
 
-// Check if file already exists
-if (file_exists($target_file)) {
-    //echo "Whoops! someone already uploaded that, " . $target_file;
-    $uploadOk = 0;
-}
 // Check file size
 if ($_FILES["file"]["size"] > 600000000) {
-    //echo "Sorry, your file is too large. (maximum size allowed 6mb)";
+    echo "Your file is too large.";
     $uploadOk = 0;
+    exit;
 }
 
 // Check if $uploadOk is set to 0 by an error
@@ -84,7 +81,7 @@ if ($uploadOk == 0) {
 </head>
 <body>
 <h1>xfnw's upload thing</h1>
-<p>files are regularly automatically deleted, and will probably be gone in 6 hours if not sooner</p>
+<p>files are regularly automatically deleted, and will probably be gone in 6 hours</p>
 
 <pre>
 # upload function
