@@ -85,11 +85,11 @@ if ($uploadOk == 0) {
 
 <pre>
 # upload function
-upload(){ curl -F"file=@$1" https://xfnw.ttm.sh/u.php }
+upload(){ curl -F"file=@$1" https://xfnw.ttm.sh/u.php ; }
 upload file.png
 
 # paste function
-paste(){ curl -F"file=@-" https://xfnw.ttm.sh/u.php }
+paste(){ curl -F"file=@-" https://xfnw.ttm.sh/u.php ; }
 cat something.txt | paste
 
 # auto upload your screenshots
