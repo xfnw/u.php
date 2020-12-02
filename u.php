@@ -38,9 +38,10 @@ if ($handle = opendir($target_dir)) {
 $target_file = $target_dir . basename($_FILES["file"]["name"]);
 $uploadOk = 0;
 $fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-if ($fileType == '') {
-	$fileType = 'txt';
+if ($fileType == '' || $fileType == 'php' || $fileType == 'html' || $fileType == 'htm') {
+        $fileType = 'txt';
 }
+
 $target_file = $target_dir . substr(md5_file($_FILES['file']['tmp_name']), 1, 6) . "." . $fileType;
 
 if (file_exists($_FILES["file"]['tmp_name'])) {
