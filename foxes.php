@@ -230,7 +230,7 @@ if ($uploadOk == 0) {
 // if everything is ok, try to upload file
 } else {
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-	    echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5_file($target_file), 1, $hl) . "." . $fileType;
+	    echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5_file($target_file), 1, $hl) . "." . $fileType . "\n";
 	    exit;
     } else {
         echo "Sorry, there was an error uploading your file.";
@@ -248,7 +248,7 @@ if ($uploadOk == 0) {
 	$target_file = $target_dir . substr(md5($file), 1, $hl) . "." . $fileType;
 
 	if ($file && file_put_contents($target_file, $file)) {
-		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($file), 1, $hl) . "." . $fileType;
+		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($file), 1, $hl) . "." . $fileType . "\n";
 		exit;
 	} else {
         	echo "Sorry, there was an error uploading your file.";
@@ -259,7 +259,7 @@ if ($uploadOk == 0) {
 
 	$target_file = $target_dir . substr(md5($url), 1, $hl) . "." . "php";
 	if (file_put_contents($target_file,'<?php header("Location: ".'.escapeshellarg($url).');exit;')) {
-		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($url), 1, $hl) . "";
+		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($url), 1, $hl) . "\n";
 		exit;
 	} else {
         	echo "Sorry, there was an error uploading your file.";
