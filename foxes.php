@@ -74,8 +74,8 @@ function mime2ext($mime) {
             'video/mj2'                                                                 => 'jp2',
             'image/jpx'                                                                 => 'jp2',
             'image/jpm'                                                                 => 'jp2',
-            'image/jpeg'                                                                => 'jpeg',
-            'image/pjpeg'                                                               => 'jpeg',
+            'image/jpeg'                                                                => 'jpg',
+            'image/pjpeg'                                                               => 'jpg',
             'application/x-javascript'                                                  => 'js',
             'application/json'                                                          => 'json',
             'text/json'                                                                 => 'json',
@@ -240,12 +240,21 @@ if ($uploadOk == 0) {
 }
 } elseif (isset($_POST['url'])) {
 	$target_file = $_POST['url'];
-	$fileType = mime2ext(mime_content_type($target_file));
+	$file = file_get_contents($target_file);
 
+	$content_type = '';
+	$pattern = "/^content-type\s*:\s*(.*)$/i";
+	if (($header = array_values(preg_grep($pattern, $http_response_header))) &&
+    		(preg_match($pattern, $header[0], $match) !== false))
+	{
+		$content_type = $match[1];
+	}
+
+
+	$fileType = mime2ext($content_type);
 	if ($fileType == '' || $fileType == 'php' || $fileType == 'html' || $fileType == 'htm') {
 		$fileType = 'txt';
 	}
-	$file = file_get_contents($target_file);
 
 	$target_file = $target_dir . substr(md5($file), 1, $hl) . "." . $fileType;
 
