@@ -20,6 +20,8 @@ function mime2ext($mime) {
             'application/x-binary'                                                      => 'bin',
             'application/x-macbinary'                                                   => 'bin',
             'image/bmp'                                                                 => 'bmp',
+            'image/webp'                                                                 => 'webp',
+            'image/x-webp'                                                                 => 'x-webp',
             'image/x-bmp'                                                               => 'bmp',
             'image/x-bitmap'                                                            => 'bmp',
             'image/x-xbitmap'                                                           => 'bmp',
