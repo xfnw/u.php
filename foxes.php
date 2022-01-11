@@ -194,6 +194,8 @@ function mime2ext($mime) {
 <?php
 $target_dir = "i";
 $hl = 4;
+$randchars = str_split('012345789abcdefghijkmnp');
+
 //$real_dir = readlink($target_dir);
 //if (!file_exists($real_dir)) {
 //	mkdir($real_dir, 0777, true);
@@ -223,13 +225,20 @@ $fileType = mime2ext(mime_content_type($_FILES['file']['tmp_name']));
 if ($fileType == '' || $fileType == 'php' || $fileType == 'html' || $fileType == 'htm') {
 	$fileType = 'txt';
 }
-$target_file = $target_dir . substr(md5_file($_FILES['file']['tmp_name']), 1, $hl) . "." . $fileType;
+$target_name = substr(md5_file($_FILES['file']['tmp_name']), 1, $hl) . "." . $fileType;
+$target_file = $target_dir . $target_name;
 
 if (file_exists($_FILES["file"]['tmp_name'])) {
 	$uploadOk = 1;
 
 }
 
+if (file_exists($target_file) && hash_file('sha256',$_FILES["file"]['tmp_name']) != hash_file('sha256',$target_file)) {
+	do {
+		$target_name = $randchars[array_rand($randchars)] . $target_name;
+		$target_file = $target_dir . $target_name;
+	} while (file_exists($target_file) && hash_file('sha256',$_FILES["file"]['tmp_name']) != hash_file('sha256',$target_file));
+}
 
 // Check if $uploadOk is set to 0 by an error
 if ($uploadOk == 0) {
@@ -237,7 +246,7 @@ if ($uploadOk == 0) {
 // if everything is ok, try to upload file
 } else {
     if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
-	    echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5_file($target_file), 1, $hl) . "." . $fileType . "\n";
+	    echo "https://" . $_SERVER['HTTP_HOST'] . "/" . $target_name . "\n";
 	    exit;
     } else {
         echo "Sorry, there was an error uploading your file.";
@@ -260,11 +269,18 @@ if ($uploadOk == 0) {
 	if ($fileType == '' || $fileType == 'php' || $fileType == 'html' || $fileType == 'htm') {
 		$fileType = 'txt';
 	}
+	$target_name = substr(md5($file), 1, $hl) . "." . $fileType;
+	$target_file = $target_dir . $target_name;
 
-	$target_file = $target_dir . substr(md5($file), 1, $hl) . "." . $fileType;
+	if (file_exists($target_file) && hash('sha256',$file) != hash_file('sha256',$target_file)) {
+		do {
+			$target_name = $randchars[array_rand($randchars)] . $target_name;
+			$target_file = $target_dir . $target_name;
+		} while (file_exists($target_file) && hash('sha256',$file) != hash_file('sha256',$target_file));
+	}
 
 	if ($file && file_put_contents($target_file, $file)) {
-		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($file), 1, $hl) . "." . $fileType . "\n";
+		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . $target_name . "\n";
 		exit;
 	} else {
         	echo "Sorry, there was an error uploading your file.";
@@ -273,9 +289,18 @@ if ($uploadOk == 0) {
 } elseif (isset($_POST['shorten'])) {
 	$url = $_POST['shorten'];
 
-	$target_file = $target_dir . substr(md5($url), 1, $hl) . "." . "php";
+	$target_name = substr(md5($url), 1, $hl);
+	$target_file = $target_dir . $target_name . "." . "php";
+
+	if (file_exists($target_file)) {
+		do {
+			$target_name = $randchars[array_rand($randchars)] . $target_name;
+			$target_file = $target_dir . $target_name;
+		} while (file_exists($target_file));
+	}
+
 	if (file_put_contents($target_file,'<?php header("Location: ".'.escapeshellarg($url).');exit;')) {
-		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . substr(md5($url), 1, $hl) . "\n";
+		echo "https://" . $_SERVER['HTTP_HOST'] . "/" . $target_name . "\n";
 		exit;
 	} else {
         	echo "Sorry, there was an error uploading your file.";
@@ -313,3 +338,4 @@ html, body {
 		</div>
 	</body>
 </html>
+
