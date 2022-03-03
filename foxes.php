@@ -20,8 +20,8 @@ function mime2ext($mime) {
             'application/x-binary'                                                      => 'bin',
             'application/x-macbinary'                                                   => 'bin',
             'image/bmp'                                                                 => 'bmp',
-            'image/webp'                                                                 => 'webp',
-            'image/x-webp'                                                                 => 'x-webp',
+            'image/webp'                                                                => 'webp',
+            'image/x-webp'                                                              => 'x-webp',
             'image/x-bmp'                                                               => 'bmp',
             'image/x-bitmap'                                                            => 'bmp',
             'image/x-xbitmap'                                                           => 'bmp',
@@ -292,12 +292,12 @@ if ($uploadOk == 0) {
 	$url = $_POST['shorten'];
 
 	$target_name = substr(md5($url), 1, $hl);
-	$target_file = $target_dir . $target_name . "." . "php";
+	$target_file = $target_dir . $target_name . ".php";
 
 	if (file_exists($target_file)) {
 		do {
 			$target_name = $randchars[array_rand($randchars)] . $target_name;
-			$target_file = $target_dir . $target_name;
+			$target_file = $target_dir . $target_name . ".php";
 		} while (file_exists($target_file));
 	}
 
@@ -340,4 +340,3 @@ html, body {
 		</div>
 	</body>
 </html>
-
